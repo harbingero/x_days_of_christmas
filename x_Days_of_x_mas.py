@@ -22,10 +22,16 @@ entire_song = []
 song_add = " day of Christmas my true love gave to me!\n"
 add_to_song = ""
 regex_number = "^[)0-12+(]"
+regex_on_the = "^On the"
 check = False
 in_numbers = False
 lines = "-----------------------------------------------------------------\n"
 after_lines = False
+to_be_cleared = False
+clear = ""
+recite_song = False
+incriment = 0
+temp = 0
 
 with open(path_to_song, "r") as f2:
     for x in f2:
@@ -40,9 +46,23 @@ with open(path_to_song, "r") as f2:
             else:
                 on_day = x + 1
                 break
-    #Set up check regex start on the, or line to append not on the or line to a reverseThisList, and line resets reverseThisList unless on end of document
 
-# on_day is now set to what the song is on.  Now we need to add one to get the next verse of the song.
+# Set up check regex start "on the", or line to append not on the or line to a reverseThisList, and line resets reverseThisList unless on end of document
+for i in entire_song:
+    incriment += 1
+    regex_check = re.search(regex_on_the, i)
+    if regex_check:
+        pass
+    elif lines in i and incriment > len(entire_song):
+        reverseThisList = []
+    else:
+        reverseThisList.append(i.strip())
+
+for l in reverseThisList:
+    print(reverseThisList[temp])
+    temp += 1
+
+# on_day is now set to what the song is on.
 with open(path_to_list, "r") as f1:
     for i in f1:
         strippedI = i.strip()
@@ -75,11 +95,13 @@ with open(path_to_song, "a") as f3:
         song_Line = song_Line + "On the " + number_days[on_day] + song_add + song_days[on_day] + add_to_song + "\n"
     f3.write(song_Line + lines)
 
-# with open(path_to_song) as f4: #Displays in terminal
-#     for line in f4:
-#         print(line.strip())
+if recite_song:
+    with open(path_to_song) as f4: #Displays in terminal
+        for line in f4:
+            print(line.strip())
 
-# clear = input("Clear file?") #Clear file within terminal
-# if len(clear) > 0:
-#     with open(path_to_song,"w") as f5:
-#         f5.write("")
+if to_be_cleared:
+    clear = input("Clear file?") #Clear file within terminal
+if len(clear) > 0:
+    with open(path_to_song,"w") as f5:
+        f5.write("")
