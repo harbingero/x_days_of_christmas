@@ -84,6 +84,7 @@ with open(path_to_song, "r") as f2:
                 on_day = x + 1
                 break
 
+reverseThisList.reverse()
 
 for i in entire_song:
     regex_check = re.search(regex_on_the, i)
@@ -94,7 +95,6 @@ for i in entire_song:
         reverseThisList.append(i.strip() + "\n")
     increment += 1
 
-reverseThisList.reverse()
 
 # on_day is now set to what the song is on.
 with open(path_to_list, "r") as f1:
