@@ -1,8 +1,10 @@
 import random
 import re
 giftList = []
-path_to_song = "12_Days_of_Christmas_2022_Song.txt"
-path_to_list = "12_Days_of_Christmas_2022_List.txt"
+reverseThisList = []
+entire_song = []
+clear = ""
+add_to_song = ""
 number_days = ("first",
                "second",
                "third",
@@ -14,25 +16,60 @@ number_days = ("first",
                "ninth",
                "tenth",
                "eleventh",
-               "twelfth")
-reverseThisList = []
-song_days = ("", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve")
-on_day = 0
-entire_song = []
+               "twelfth",
+               "thirteenth",
+               "fourteenth",
+               "fifteenth",
+               "sixteenth",
+               "seventeenth",
+               "eighteenth",
+               "nineteenth",
+               "twentieth",
+               "twenty-first",
+               "twenty-second",
+               "twenty-third",
+               "twenty-fourth")
+song_days = ("",
+             "Two",
+             "Three",
+             "Four",
+             "Five",
+             "Six",
+             "Seven",
+             "Eight",
+             "Nine",
+             "Ten",
+             "Eleven",
+             "Twelve",
+             "Thirteen",
+             "Fourteen",
+             "Fifteen",
+             "Sixteen",
+             "Seventeen",
+             "Eighteen",
+             "Nineteen",
+             "Twenty",
+             "Twenty-one"
+             "Twenty-two",
+             "Twenty-three",
+             "Twenty-four")
+path_to_song = "12_Days_of_Christmas_2022_Song.txt"
+path_to_list = "12_Days_of_Christmas_2022_List.txt"
 song_add = " day of Christmas my true love gave to me!\n"
-add_to_song = ""
 regex_number = "^[)0-12+(]"
 regex_on_the = "^On the"
+lines = "-----------------------------------------------------------------\n"
+increment = 0
+temp = 0
+on_day = 0
 check = False
 in_numbers = False
-lines = "-----------------------------------------------------------------\n"
 after_lines = False
-to_be_cleared = False
-clear = ""
-recite_song = False
-incriment = 0
-temp = 0
+to_be_cleared = False  # Clear song file
+recite_song = True  # Print song to terminal
+write = True  # True to add to song
 
+# Check the song to see what day we're on
 with open(path_to_song, "r") as f2:
     for x in f2:
         entire_song.append(x)
@@ -47,20 +84,17 @@ with open(path_to_song, "r") as f2:
                 on_day = x + 1
                 break
 
-# Set up check regex start "on the", or line to append not on the or line to a reverseThisList, and line resets reverseThisList unless on end of document
-for i in entire_song:
-    incriment += 1
-    regex_check = re.search(regex_on_the, i)
-    if regex_check:
-        pass
-    elif lines in i and incriment > len(entire_song):
-        reverseThisList = []
-    else:
-        reverseThisList.append(i.strip())
 
-for l in reverseThisList:
-    print(reverseThisList[temp])
-    temp += 1
+for i in entire_song:
+    regex_check = re.search(regex_on_the, i)
+    regex_line = re.search(lines, i)
+    if regex_line and increment < len(entire_song)-1:
+        reverseThisList = []
+    elif not regex_line and not regex_check and len(i) > 1:
+        reverseThisList.append(i.strip() + "\n")
+    increment += 1
+
+reverseThisList.reverse()
 
 # on_day is now set to what the song is on.
 with open(path_to_list, "r") as f1:
@@ -87,21 +121,25 @@ with open(path_to_song, "a") as f3:
     for line in entire_song:
         while re.search(add_to_song, line):
             add_to_song = giftList[random.randint(0, len(giftList))]
-    print(entire_song)  # This area, I am attempting to fix for formatting.  The song kind of works.  Now I need it to go backwards 5,4,3,2,and an x
     if len(entire_song) > 0:
         song_Line = "\n"
         song_Line = song_Line + "On the " + number_days[on_day] + song_add + song_days[on_day] + " " + add_to_song + "\n"
     else:
         song_Line = song_Line + "On the " + number_days[on_day] + song_add + song_days[on_day] + add_to_song + "\n"
-    f3.write(song_Line + lines)
+    for append in reverseThisList:
+        song_Line += append
+    if write:
+        f3.write(song_Line + lines)
 
+# Reciting song to terminal if above variable is True
 if recite_song:
-    with open(path_to_song) as f4: #Displays in terminal
+    with open(path_to_song) as f4:  # Displays in terminal
         for line in f4:
             print(line.strip())
 
+# Clear reset the song file if variable is True
 if to_be_cleared:
-    clear = input("Clear file?") #Clear file within terminal
+    clear = input("Clear file?")  # Clear file within terminal
 if len(clear) > 0:
-    with open(path_to_song,"w") as f5:
+    with open(path_to_song, "w") as f5:
         f5.write("")
