@@ -53,6 +53,30 @@ song_days = ("",
              "Twenty-two",
              "Twenty-three",
              "Twenty-four")
+dice = ("",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24")
 path_to_song = "12_Days_of_Christmas_2022_Song.txt"
 path_to_list = "12_Days_of_Christmas_2022_List.txt"
 song_add = " day of Christmas my true love gave to me!\n"
@@ -121,6 +145,7 @@ with open(path_to_song, "a") as f3:
     for line in entire_song:
         while re.search(add_to_song, line):
             add_to_song = giftList[random.randint(0, len(giftList))]
+    add_to_song = re.sub("^D%i%", "D"+dice[on_day], add_to_song, count=1)
     if len(entire_song) > 0:
         song_Line = "\n"
         song_Line = song_Line + "On the " + number_days[on_day] + song_add + song_days[on_day] + " " + add_to_song + "\n"
