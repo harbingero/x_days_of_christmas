@@ -49,7 +49,7 @@ song_days = ("",
              "Eighteen",
              "Nineteen",
              "Twenty",
-             "Twenty-one"
+             "Twenty-one",
              "Twenty-two",
              "Twenty-three",
              "Twenty-four")
@@ -91,7 +91,7 @@ in_numbers = False
 after_lines = False
 to_be_cleared = False  # Clear song file
 recite_song = True  # Print song to terminal
-write = True  # True to add to song
+write = True  # True to add to song.  False to print only to terminal.
 
 # Check the song to see what day we're on
 with open(path_to_song, "r") as f2:
@@ -144,7 +144,7 @@ with open(path_to_song, "a") as f3:
     add_to_song = giftList[random.randint(0, len(giftList)-1)]
     for line in entire_song:
         while re.search(add_to_song, line):
-            add_to_song = giftList[random.randint(0, len(giftList))]
+            add_to_song = giftList[random.randint(0, len(giftList)-1)]
     add_to_song = re.sub("^D%i%", "D"+dice[on_day], add_to_song, count=1)
     if len(entire_song) > 0:
         song_Line = "\n"
@@ -153,6 +153,8 @@ with open(path_to_song, "a") as f3:
         song_Line = song_Line + "On the " + number_days[on_day] + song_add + song_days[on_day] + add_to_song + "\n"
     for append in reverseThisList:
         song_Line += append
+    if write is False:
+        print(song_Line)
     if write:
         f3.write(song_Line + lines)
 
